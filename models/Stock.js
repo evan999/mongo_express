@@ -11,7 +11,8 @@ const StockSchema = new Schema({
         required: true 
     },
     timeZone: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     lastPrice: {
         type: Number
@@ -23,10 +24,10 @@ const StockSchema = new Schema({
     YTDReturn: {
         type: Number
     },
-    watchList: {
-        type: Array,
+    watchList: [{
+        type: String,
         default: undefined
-    },
+    }],
     purchased: {
         type: Boolean,
         default: false
@@ -34,7 +35,11 @@ const StockSchema = new Schema({
     lastUpdated: {
         type: Date,
         default: Date.now
-    }
+    },
+    topStocks: [{
+        type: String,
+        default: undefined
+    }]
 })
 
-module.exports = Stock = mongoose.model("stocks", StockSchema)
+module.exports = Stock = mongoose.model("stocks", StockSchema);
