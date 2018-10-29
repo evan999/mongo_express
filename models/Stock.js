@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const StockSchema = new Schema({
     symbol: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,

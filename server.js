@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require('body-parser'); // middleware
 const mongoose = require('mongoose');
 
+const Router = require('Router');
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -13,7 +15,7 @@ mongoose
     .then(() => console.log("Mongo DB connected"))
     .catch(err => console.log(err))
 
-app.get('/', (req, res) => res.send('Hello'));
+app.get('/', (req, res) => res.send('Hello'))
 
 const port = process.env.PORT || 5000;
 
