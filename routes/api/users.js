@@ -35,11 +35,39 @@ router.post('/', (req, res) => {
   const newUser = new User({
     name,
     password,
+    avatar
   })
 
-  newUser.avatar = avatar;
   
-  newUser.save(); // save newly added user to database
+  newUser.save() // save newly added user to database
+      .then(user => res.status(201).json(user))
+      .catch(err => {
+        res.status(500).json({message: err});
+      });
+})
+
+router.delete('/:name', (req, res) => {
+  // TODO: protected route - ensure the user is the one deleting
+  const name = req.params.name;
+   User.findOne({ name })
+    .then(user => {
+      console.log(user);
+      if(!user){
+        return res.status(404).json({message: `User: ${name} not found`});
+      }
+      user.remove()
+        .then(() => res.status(204).json({message: `User ${name} successfully deleted`}))
+        .catch(err => res.status(500).json(err));
+    })
+    .catch(err => res.status(500).json({message: err}));
+})
+
+router.put('/:name', (req, res) => {
+  
+  // findOne()
+  //   .then(user) => {
+  //     findOneAndUpdate()
+  //   }
 })
 
 module.exports = router;
