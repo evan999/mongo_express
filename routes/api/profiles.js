@@ -1,8 +1,8 @@
 const express = require('express');
 const profile = require('../../models/Profile');
-const router = express.Router();
+const profileRouter = express.Router();
 
-router.get('/', (req, res) => {
+profileRouter.get('/', (req, res) => {
   Profile.find()
     .then(profiles => {
       res.json(profiles);
@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 
 // GET route for checking profiles collection
 
-router.get('/:email', (req, res) => {
+profileRouter.get('/:email', (req, res) => {
     const { firstName, lastName, aboutMe, age, email } = req.params;
     Profile.findOne({ email })
       .then(profile => {
@@ -25,11 +25,11 @@ router.get('/:email', (req, res) => {
       .catch(err => res.status(500).json({message: err}));
 })
 
-router.
+
 
 // Create new profile
 
-router.post('/', (req, res) => {
+profileRouter.post('/', (req, res) => {
     const { firstName, lastName, aboutMe, age, email } = req.body;
     const newProfile = new Profile({
       firstName,
@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
 
 // Update profile
 
-router.put('/:email', (req, res){
+profileRouter.put('/:email', (req, res){
   const email = req.params.email;
   Profile.findOne({ email })
     .then(profile => {
@@ -68,7 +68,7 @@ router.put('/:email', (req, res){
 
 // Delete profile
 
-router.delete('/:email', (req, res) => {
+profileRouter.delete('/:email', (req, res) => {
   const email = req.params.email;
   Profile.findOne({ email })
     .then(profile => {
@@ -83,4 +83,4 @@ router.delete('/:email', (req, res) => {
     .catch(err => res.status(500).json({message: err}));
 })
 
-module.exports = router;
+module.exports = profileRouter;

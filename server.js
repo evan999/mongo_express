@@ -19,6 +19,12 @@ app.use('/api/users', users);
 
 app.get('/', (req, res) => res.send('Hello'))
 
+const profiles = require('./routes/api/profiles');
+
+app.use('/api/profiles', profiles);
+
+app.get('/', (req, res) => res.send('Hello'));
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log('Application listening on port', port));
