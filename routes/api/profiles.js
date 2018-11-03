@@ -2,6 +2,8 @@ const express = require('express');
 const profile = require('../../models/Profile');
 const profileRouter = express.Router();
 
+// Read all profiles
+
 profileRouter.get('/', (req, res) => {
   Profile.find()
     .then(profiles => {
@@ -10,7 +12,7 @@ profileRouter.get('/', (req, res) => {
     .catch(err => console.log(err));
 })
 
-// GET route for checking profiles collection
+// Read one profile by email
 
 profileRouter.get('/:email', (req, res) => {
     const { firstName, lastName, aboutMe, age, email } = req.params;
@@ -44,37 +46,36 @@ profileRouter.post('/', (req, res) => {
       .catch(err => res.status(500).json({message: err}));
 })
 
-// Update profile
+// Update one profile
 
-profileRouter.put('/:email', (req, res){
-  const email = req.params.email;
+profileRouter.put('/:email', (req, res) => {
+  const { email } = req.params;
+  const { firstName, lastName, aboutMe, age } = req.body;
+  
   Profile.findOne({ email })
     .then(profile => {
-      Profile.findOneAndUpdate({ email }, {$set: {email: { email }}, {new: true})
-        .then((profile)) => {
-          if(!profile){
-           return res.status(404).json({message: `Profile for ${email} not found`});
-          }
-          res.status(226).json({message: `Profile updated`})
-        .catch(err => res.status(500).json(err));  
+       if(profile){
+          Profile.findOneAndUpdate(
+            { email }, 
+            {$set: {firstName, lastName, aboutMe, age}}, 
+            {new: true})
+            .then(updatedProfile => {
+              res.json(updatedProfile)
+            })
+            .catch(err => res.status(500).json({message: err}));  
+       }
     })
-    .catch(err => res.status(500).json({message: err}));
-        
-  })
-    
-    
 })
 
 
-// Delete profile
+// Delete one profile
 
 profileRouter.delete('/:email', (req, res) => {
   const email = req.params.email;
   Profile.findOne({ email })
     .then(profile => {
-      console.log(profile);
       if(!profile){
-        return res.status(404).json({message: `Profile for ${email} not found`});
+        return res.status(404).json({message: `Profile for ${email} not found`})
       }
       profile.remove()
         .then(() => res.status(204).json({message: `Profile for ${email} successfully deleted`}))

@@ -23,7 +23,7 @@ const profiles = require('./routes/api/profiles');
 
 app.use('/api/profiles', profiles);
 
-app.get('/', (req, res) => res.send('Hello'));
+// app.get('/', (req, res) => res.send('Hello'));
 
 const port = process.env.PORT || 5000;
 
