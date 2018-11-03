@@ -49,7 +49,7 @@ router.post('/', (req, res) => {
 router.delete('/:name', (req, res) => {
   // TODO: protected route - ensure the user is the one deleting
   const name = req.params.name;
-   User.findOne({ name })
+  User.findOne({ name })
     .then(user => {
       console.log(user);
       if(!user){

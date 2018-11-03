@@ -25,6 +25,8 @@ router.get('/:email', (req, res) => {
       .catch(err => res.status(500).json({message: err}));
 })
 
+router.
+
 // Create new profile
 
 router.post('/', (req, res) => {
@@ -42,17 +44,43 @@ router.post('/', (req, res) => {
       .catch(err => res.status(500).json({message: err}));
 })
 
+// Update profile
+
+router.put('/:email', (req, res){
+  const email = req.params.email;
+  Profile.findOne({ email })
+    .then(profile => {
+      Profile.findOneAndUpdate({ email }, {$set: {email: { email }}, {new: true})
+        .then((profile)) => {
+          if(!profile){
+           return res.status(404).json({message: `Profile for ${email} not found`});
+          }
+          res.status(226).json({message: `Profile updated`})
+        .catch(err => res.status(500).json(err));  
+    })
+    .catch(err => res.status(500).json({message: err}));
+        
+  })
+    
+    
+})
+
+
+// Delete profile
+
 router.delete('/:email', (req, res) => {
   const email = req.params.email;
   Profile.findOne({ email })
     .then(profile => {
       console.log(profile);
       if(!profile){
-        return res.status(404).json({message: `Profile not found`});
+        return res.status(404).json({message: `Profile for ${email} not found`});
       }
       profile.remove()
-        .then(() => res.status(204).json({message: `Profile successfully deleted`}))
+        .then(() => res.status(204).json({message: `Profile for ${email} successfully deleted`}))
         .catch(err => res.status(500).json(err));
     })
     .catch(err => res.status(500).json({message: err}));
 })
+
+module.exports = router;
