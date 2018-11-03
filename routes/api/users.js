@@ -63,11 +63,23 @@ router.delete('/:name', (req, res) => {
 })
 
 router.put('/:name', (req, res) => {
+  const { name } = req.params;
+  const { password, avatar } = req.body;
   
-  // findOne()
-  //   .then(user) => {
-  //     findOneAndUpdate()
-  //   }
+  User.findOne({ name })
+    .then(user => {
+      if(user){
+        User.findOneAndUpdate(
+          { name },
+          {$set: { password, avatar }},
+          {new: true})
+          .then(updatedUser => {
+            res.json(updatedUser)
+          })
+          .catch(err => res.status(500).json({message: err}));
+      }
+    })
+  
 })
 
 module.exports = router;
